@@ -6,3 +6,4 @@ starter/**/out/
 starter/**/*.msh
 docs/build/node_modules/
 docs/build/render/
+starter/02_benchmarks/ogs_src/

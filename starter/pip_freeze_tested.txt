@@ -1,0 +1,7 @@
+CoolProp==8.0.0
+gmsh==4.15.2
+numpy==2.5.4
+ogs==6.5.9
+ogstools==0.8.2
+pyvista==0.49.2
+vtk==9.7.2

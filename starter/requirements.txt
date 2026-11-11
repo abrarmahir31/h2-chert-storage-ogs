@@ -1,0 +1,3 @@
+# Versions tested by Claude on Linux (Ubuntu 24.04, Python 3.13), 2026-11-11.
+ogstools[ogs]==0.8.2   # installs ogs 6.5.9, gmsh, pyvista
+CoolProp==8.0.0        # only for properties/compute_h2_properties.py
