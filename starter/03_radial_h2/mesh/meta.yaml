@@ -1,0 +1,9 @@
+has_identified_subdomains: true
+meshes:
+- domain
+- well
+- outer
+- top
+- bottom
+num_partitions: []
+output_names: {}

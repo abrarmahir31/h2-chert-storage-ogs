@@ -1,0 +1,50 @@
+key,value,unit,description,tag,source
+T_res,323.15,K,Reservoir temperature (50 degC; model is isothermal),synthetic/literature,Assumed ~25 degC/km gradient + 15 degC surface at ~1.4 km depth; TO-VERIFY with bottom-hole temperatures from Barber County logs (KGS)
+z_top_res,1450,m,Depth of reservoir top (positive down),synthetic/literature,Order of magnitude for Mississippian chat in Barber County; TO-VERIFY against KGS well tops
+p_init,4.0e6,Pa,Initial (depleted) gas pressure,synthetic/literature,Assumed depleted state (~30% of hydrostatic); replace with field shut-in pressure (TO-VERIFY)
+S_L_init,0.60,-,Initial liquid (brine) saturation,synthetic/literature,High water saturation typical of microporous chat (Watney et al. 2001); log-derived value to be swapped in
+res_porosity,0.30,-,Total porosity of chat reservoir (effective continuum),synthetic/literature,Watney et al. 2001 report 25-50% for reservoir chert facies
+res_permeability,1.0e-14,m2,Effective permeability (about 10 mD),synthetic/literature,Watney et al. 2001: reservoir facies > 5 mD
+res_S_Lr,0.45,-,Residual (immobile) liquid saturation = water held in micropores,synthetic/literature,Represents microporosity-bound water (Watney et al. 2001 capillary data); TO-VERIFY
+res_vG_pb,5.0e5,Pa,van Genuchten capillary scale pressure p_b,synthetic/literature,Placeholder; fit to chat mercury-injection data (Watney et al. 2001) TO-VERIFY
+res_vG_m,0.5,-,van Genuchten exponent m,synthetic/literature,Placeholder; fit to chat capillary data TO-VERIFY
+res_S_gr_drain,0.0,-,Residual gas saturation for drainage (no trapping) bracket,synthetic/literature,Bracket A: no trapping (upper bound on recovery)
+land_C,2.0,-,Land trapping coefficient used to build imbibition bracket,synthetic/literature,Land (1968); range 1-5 to be tested in sensitivity
+res_E,10.0e9,Pa,Young's modulus of reservoir chert (drained),synthetic/literature,Placeholder generic value; TO-VERIFY with sonic/density logs
+res_nu,0.25,-,Poisson's ratio of reservoir,synthetic/literature,Placeholder generic value; TO-VERIFY
+biot,1.0,-,Biot coefficient,synthetic/literature,Upper-bound assumption as in OGS TH2M benchmarks; TO-VERIFY
+rho_solid,2650,kg/m3,Grain density (quartz/chert),synthetic/literature,Density of quartz (standard value)
+cap_porosity,0.05,-,Caprock porosity,synthetic/literature,Generic shale value; TO-VERIFY
+cap_permeability,1.0e-19,m2,Caprock permeability,synthetic/literature,Generic shale value; TO-VERIFY
+cap_vG_pb,5.0e6,Pa,Caprock capillary scale pressure,synthetic/literature,Generic shale value; TO-VERIFY
+cap_E,15.0e9,Pa,Caprock Young's modulus,synthetic/literature,Generic shale value; TO-VERIFY
+cap_nu,0.30,-,Caprock Poisson's ratio,synthetic/literature,Generic shale value; TO-VERIFY
+flt_porosity,0.10,-,Fault band porosity,synthetic/literature,Generic damage-zone value; TO-VERIFY
+flt_permeability,1.0e-16,m2,Fault band permeability (base case),synthetic/literature,Sensitivity range 1e-18 to 1e-14
+flt_E,5.0e9,Pa,Fault band Young's modulus (damaged rock),synthetic/literature,Generic; TO-VERIFY
+flt_nu,0.30,-,Fault band Poisson's ratio,synthetic/literature,Generic; TO-VERIFY
+H2_M,0.00201588,kg/mol,Molar mass of H2,computed,CoolProp (Bell et al. 2014) / Leachman et al. 2009
+H2_Tc,33.1443,K,Critical temperature of H2 (for PengRobinson),computed,CoolProp 8.0 normal-hydrogen EOS (Leachman et al. 2009)
+H2_pc,1.29636e6,Pa,Critical pressure of H2 (for PengRobinson),computed,CoolProp 8.0 normal-hydrogen EOS (Leachman et al. 2009)
+H2_omega,-0.219,-,Acentric factor of H2 (for PengRobinson),computed,CoolProp 8.0 normal-hydrogen EOS (Leachman et al. 2009)
+H2_viscosity,9.5e-6,Pa s,H2 viscosity at T_res and 4-15 MPa (varies < 2%),computed,compute_h2_properties.py; CoolProp with Muzny et al. 2013 correlation
+H2_henry,7.8e-6,mol/(m3 Pa),Henry solubility constant of H2 in water (Hcp),literature,Sander (2023) compilation; pure water at 298 K - brine salting-out and temperature effect ignored (TO-VERIFY at 50 degC and field salinity)
+H2_diff_liquid,3.0e-9,m2/s,Diffusion coefficient of dissolved H2 in brine,literature,Value used in the OGS TH2M benchmark bourgeat.prj; TO-VERIFY
+brine_density,1100,kg/m3,Brine density at reference pressure,synthetic/literature,Moderate-salinity brine; Batzle & Wang 1992 range; TO-VERIFY with Kansas produced-water data
+brine_compressibility,4.0e-10,1/Pa,Brine compressibility (used in Linear density),synthetic/literature,Typical brine value (Batzle & Wang 1992 order of magnitude); TO-VERIFY
+brine_viscosity,6.0e-4,Pa s,Brine viscosity at T_res,synthetic/literature,Pure water at 50 degC is 5.5e-4 Pa s (CoolProp IAPWS-95); salinity raises it; TO-VERIFY
+rate_inj,0.1,kg/s,H2 mass injection rate of one well (about 96000 Sm3/day),synthetic/literature,Screening value; varied in sensitivity
+t_cushion,180,day,Initial cushion-gas filling period (H2 used as cushion),synthetic/literature,Design choice
+t_inj,120,day,Injection period per cycle,synthetic/literature,Seasonal cycle design
+t_rest,30,day,Shut-in period between injection and withdrawal,synthetic/literature,Seasonal cycle design
+t_wd,120,day,Withdrawal period per cycle,synthetic/literature,Seasonal cycle design
+n_cycles,3,-,Number of storage cycles,synthetic/literature,Screening (increase to 5-10 for paper)
+p_bhp_min,4.0e6,Pa,Minimum bottom-hole gas pressure during withdrawal,synthetic/literature,Set equal to p_init so native gas (modelled as H2) is not produced
+Sv_grad,23.0e3,Pa/m,Vertical stress gradient,synthetic/literature,About 1 psi/ft; TO-VERIFY with density log integration
+Shmin_ratio,0.70,-,Shmin / Sv,synthetic/literature,Strike-slip regime assumed for south-central Kansas (TO-VERIFY); sensitivity 0.6-0.8
+SHmax_ratio,1.10,-,SHmax / Sv,synthetic/literature,Strike-slip regime assumed (TO-VERIFY); sensitivity 1.0-1.3
+friction,0.6,-,Fault friction coefficient,literature,Byerlee (1978); sensitivity 0.4-0.8
+fault_dip,60,deg,Fault dip angle in the 2D section,synthetic/literature,Sensitivity 45-75 deg
+r_well,0.1,m,Well radius (inner boundary of radial model),synthetic/literature,Typical production casing scale
+re_compartment,500,m,Radius of the closed (no-flow) compartment drained by the well,synthetic/literature,Design/sensitivity parameter (250-1000 m); fault-bounded compartment assumed
+res_thickness,20,m,Net reservoir thickness in radial model,synthetic/literature,Placeholder; TO-VERIFY from log-derived net pay
