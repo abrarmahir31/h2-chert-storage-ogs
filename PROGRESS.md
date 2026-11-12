@@ -15,3 +15,4 @@
 | README.md | done | |
 | Docker fallback (starter/docker) | done | built and tested on Linux: check_install ALL OK, radial 1-cycle RF 0.707 = host |
 | Days 21-25 command loops run as printed | done | all ran; found + fixed rate bug (D19), shortcut overestimate (D18), RF>1 (D17); mesh converged at 600 cells |
+| Windows install verified by user (Win10 Pro 19045, WSL2, uv, Python 3.12, OGS 6.5.9, ogstools 0.8.2) and guide/READMEs updated | done | Next on Windows: system libraries, CoolProp, check_install.py, Day 3 benchmarks |

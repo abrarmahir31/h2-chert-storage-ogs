@@ -21,9 +21,9 @@ add(new Paragraph({ spacing: { after: 120 }, children: [new TextRun({ text: "An 
 add(new Paragraph({ spacing: { after: 600 }, children: [new TextRun({ text: "Installation \u00B7 OGS set-up \u00B7 30-day workflow \u00B7 starter models \u00B7 verified references", size: 22, color: L.C.ink2 })] }));
 add(...L.table(null, [
   ["**Software**", "OpenGeoSys 6.5.9 and ogstools 0.8.2 (pip), Python 3.12/3.13, gmsh 4.15, ParaView"],
-  ["**Platform**", "Windows 11 + WSL2 Ubuntu 24.04 (primary); native Windows pip and Docker as fallbacks"],
+  ["**Platform**", "Windows 10 (build 19041 or later) or Windows 11 + WSL2 Ubuntu + uv + Python 3.12 (primary); native Windows pip and Docker as fallbacks"],
   ["**Companion files**", "Repository abrarmahir31/h2-chert-storage-ogs, folder starter/ (all scripts were run)"],
-  ["**Status tags**", "{T}  = run by Claude in a Linux sandbox.   {W}  = written from official docs.   {V}  = not yet verified."],
+  ["**Status tags**", "{T}  = run by Claude in a Linux sandbox.   {W}  = written from official docs.   {V}  = not yet verified.   {U}  = run by the user on the lab PC."],
   ["**Version**", "1.0, 12 November 2026"],
 ], [1.4, 6]));
 add(...callout("Warning", "This is a generic screening study built from cited literature values and clearly labelled synthetic values. It is not a site-specific prediction for the Aetna Gas Area. Every model property carries a source tag in starter/properties/properties.csv."));
@@ -38,11 +38,12 @@ add(P("This guide takes you from no OpenGeoSys (OGS) experience to a first manus
 add(...table(["Marker", "Meaning"], [
   ["{T}", "Claude ran this exact command or file in a Linux sandbox (Ubuntu 24.04 container and Linux host, 4 cores, 16 GB) and saw it work. Output shown is real."],
   ["{W}", "Windows-only step written from official Microsoft/OGS documentation. Claude could not run Windows. You test it."],
+  ["{U}", "The user ran this step on the lab PC (Windows 10 Pro build 19045, WSL2) and it worked."],
   ["{V}", "A value or statement Claude could not confirm. Do not cite it until you have checked it."],
   ["Tip / Warning / Check / Why this matters", "Call-out boxes. \u201CWhy this matters\u201D gives the physics or numerical reason for a step."],
 ], [1.6, 6]));
 add(P("Commands are in grey boxes. Type them exactly. Lines starting with `#` inside a box are comments. In every new Ubuntu terminal, first activate the Python environment:"));
-add(...code("source ~/ogs-env/bin/activate\ncd ~/h2-chert-storage-ogs"));
+add(...code("cd ~\nexport PATH=\"$HOME/.local/bin:$PATH\"\nsource ~/ogs-env/bin/activate\ncd ~/work/h2-chert-storage-ogs"));
 add(...image(FIG("fig_workflow.png"), 6.3, "Figure 1. Workflow of the 30-day plan."));
 
 // ============================================================ 1 feasibility
@@ -98,7 +99,8 @@ add(...table(["#", "Limit", "Exact wording to use"], [
 ], [0.3, 1.5, 5.2]));
 add(P("**Further simplifications (also stated in the manuscript):** isothermal (temperature fixed); water evaporation off (vapour_pressure = 0); ideal-gas H2 density (+2 to +6 % in the operating range); 2D geometry (axisymmetric well; plane-strain section); no gravity in the base case (tested: gravity changes cycle-1 recovery from 0.707 to 0.708 in the 20 m layer); linear elasticity; fault slip not modelled; no geochemistry or microbial H2 consumption; withdrawal at a bottom-hole gas pressure equal to the initial depleted pressure (gas-only producer)."));
 add(H2("1.8 Compute plan for your PC"));
-add(P("Your PC: 32 GB RAM, 6-8 cores, 30-100 GB free disk, Windows 11. Run times measured in the 4-core sandbox (your PC will be similar or faster):"));
+add(...callout("Check", ["**My machine (lab PC):** Windows 10 Pro build 19045, AMD Ryzen 7 5700X (8 cores / 16 threads), 32 GB RAM, virtualization enabled, WSL2 + Ubuntu, Python 3.12 venv with OGS 6.5.9 {U}.", "The models in this guide are sized to run on this hardware: 2D axisymmetric (well) and 2D plane-strain (fault) models first; 3D only as an optional later step."]));
+add(P("Run times measured in the 4-core Linux sandbox (the 8-core lab PC should be similar or faster):"));
 add(...table(["Model", "Cells", "Run time", "Memory"], [
   ["Six official benchmarks", "small", "< 1.5 min total", "< 1 GB"],
   ["Radial model, 1 cycle", "600", "\u2248 2.5 min", "< 1 GB"],
@@ -106,7 +108,7 @@ add(...table(["Model", "Cells", "Run time", "Memory"], [
   ["Fault section, 1 cycle", "9 372", "\u2248 19 min", "\u2248 1-2 GB"],
   ["Coarse 3D sector (optional, not built)", "50k-200k", "hours (estimate)", "8-24 GB (estimate) {V}"],
 ], [3, 1, 1.4, 1.6]));
-add(P("**Plan:** all paper runs in 2D. Run two OGS jobs at the same time (one per brackets/scenario), each using 3 threads (`export OMP_NUM_THREADS=3`). Each run writes 50-150 MB, so keep about 20 GB free and delete `out*/` folders you no longer need. 3D is optional and only after the 2D results are complete."));
+add(P("**Plan:** all paper runs in 2D. Run two OGS jobs at the same time (one per brackets/scenario), each using 4 threads (`export OMP_NUM_THREADS=4`; 8 physical cores on the lab PC). Each run writes 50-150 MB, so keep about 20 GB free and delete `out*/` folders you no longer need. 3D is optional and only after the 2D results are complete."));
 add(H2("1.9 What was verified, and how"));
 add(...table(["Item", "Status"], [
   ["pip install ogstools[ogs]==0.8.2 \u2192 ogs 6.5.9 (Linux, Python 3.13 host and 3.12 container)", "{T}"],
@@ -115,60 +117,85 @@ add(...table(["Item", "Status"], [
   ["Radial TH2M model: 3 cycles x 2 brackets; mass balance < 1 %; 1-cycle run identical in container (RF 0.707)", "{T}"],
   ["Fault section TH2M + Coulomb analysis + 6 verification tests", "{T}"],
   ["Docker container (starter/docker/Dockerfile) build and check", "{T} on Linux; Docker Desktop on Windows {W}"],
-  ["WSL install, .wslconfig, VS Code WSL extension, ParaView on Windows, native Windows pip", "{W}"],
+  ["WSL2 + Ubuntu install, apt packages, uv + Python 3.12 venv, ogstools[ogs] (ogs 6.5.9, ogstools 0.8.2), repository clone", "{U}"],
+  ["System libraries + check_install.py on Windows, .wslconfig, VS Code WSL extension, ParaView on Windows, native Windows pip", "{W}"],
   ["Site values (depth, temperature, brine, stress magnitudes, fault geometry)", "{V} synthetic/literature"],
 ], [5.2, 1.8]));
 
 // ============================================================ 2 installation
-add(H1("2. Installing OGS on Windows 11"));
+add(H1("2. Installing OGS on Windows 10 or 11"));
 add(P("**OGS** (OpenGeoSys) is an open-source finite-element program for coupled thermal (T), hydraulic (H) and mechanical (M) processes in porous media. **ogstools** is its Python companion (meshes, running, reading results). The pip package `ogstools[ogs]` installs both, plus gmsh (mesher) and pyvista (3D data)."));
 add(...table(["Route", "When to use", "MFront / PETSc", "Status"], [
-  ["A. WSL2 + pip in a venv (primary)", "Default for this study", "MFront yes / PETSc no", "Linux part {T}; Windows part {W}"],
+  ["A. WSL2 + Ubuntu + uv + Python 3.12 venv (primary)", "Default for this study", "MFront yes / PETSc no", "{U}"],
+  ["A2. WSL2 + system Python venv", "Only if `python3 --version` is 3.10-3.13 (e.g. Ubuntu 24.04)", "MFront yes / PETSc no", "{T} on Linux; Windows {W}"],
   ["B. Native Windows pip", "If WSL is not allowed on your PC", "no / no (official table)", "{W}"],
   ["C. Docker container", "Reproducibility package; fallback", "MFront yes / PETSc no", "{T} on Linux; Docker Desktop {W}"],
 ], [2.2, 2, 1.6, 1.6]));
 add(P("MFront is a library for advanced rock constitutive models (not needed for the linear-elastic starter). PETSc enables parallel MPI runs (not needed on a laptop)."));
 add(H2("2.1 Check your PC"));
 add(...code("# PowerShell (Windows)\nGet-CimInstance Win32_ComputerSystem | Select TotalPhysicalMemory\nGet-CimInstance Win32_Processor | Select NumberOfCores,NumberOfLogicalProcessors\nGet-PSDrive C\nwinver"));
-add(P("{W} Minimum for this plan: 16 GB RAM, 4 cores, 30 GB free. You have 32 GB and 6-8 cores: comfortable for all 2D work."));
-add(H2("2.2 Route A: WSL2 + Ubuntu 24.04 + Python venv (primary)"));
-add(P("**WSL2** (Windows Subsystem for Linux) runs a real Linux kernel inside Windows. The OGS team recommends WSL for Windows users and tests on Ubuntu 24.04."));
+add(P("{W} `wsl --install` needs Windows 10 build 19041 or later, or Windows 11. Minimum for this plan: 16 GB RAM, 4 cores, 30 GB free. The lab PC (build 19045, 8 cores, 32 GB) is comfortable for all 2D work."));
+add(H2("2.2 Route A: WSL2 + Ubuntu + uv + Python 3.12 (primary, verified on Windows)"));
+add(P("**WSL2** (Windows Subsystem for Linux) runs a real Linux kernel inside Windows; the OGS team recommends it for Windows users. **uv** is a fast Python installer that can create a virtual environment with a specific Python version. This exact sequence was run on the lab PC (Windows 10 Pro build 19045)."));
 add(...numbered([
-  "Install WSL and Ubuntu (PowerShell as Administrator), restart when asked {W}:",
-  { code: "wsl --install -d Ubuntu-24.04" },
-  "Optional: limit WSL resources with `C:\\Users\\<you>\\.wslconfig`, then `wsl --shutdown` {W}:",
-  { code: "[wsl2]\nmemory=24GB\nprocessors=6" },
-  "In Ubuntu: system libraries, repository, venv, OGS {T}:",
-  { code: "sudo apt update\nsudo apt install -y python3-venv git libgl1 libglu1-mesa libgomp1 \\\n    libxcursor1 libxinerama1 libxft2 libxrender1 libosmesa6\ncd ~\ngit clone https://github.com/abrarmahir31/h2-chert-storage-ogs.git\npython3 -m venv ~/ogs-env\nsource ~/ogs-env/bin/activate\npip install --upgrade pip\npip install -r ~/h2-chert-storage-ogs/starter/requirements.txt\nogs --version" },
+  "PowerShell as Administrator: install WSL and Ubuntu (download takes a few minutes); create the Linux user and password. A question about sending usage metrics to Canonical can be answered y or n {U}:",
+  { code: "wsl --install -d Ubuntu" },
+  "In Ubuntu, start in the Linux home folder (new windows can open in /mnt/c/Windows/system32) and install basic tools. A red \u201CJob for systemd-binfmt.service failed\u201D message is harmless in WSL {U}:",
+  { code: "cd ~\nsudo apt update\nsudo apt install -y python3 python3-venv python3-pip git curl" },
+  "**Check the Python version before installing OGS** {U}:",
+  { code: "python3 --version" },
+  { note: "The OGS pip package supports Python 3.10-3.13 only. The current Ubuntu release (\u201Cresolute\u201D) ships Python 3.14 (3.14.4 on the lab PC), where `ogs` cannot be installed. Do not use the system Python then: create a Python 3.12 environment with uv." },
+  "Install uv, create and activate the Python 3.12 environment, install OGS {U}:",
+  { code: "curl -LsSf https://astral.sh/uv/install.sh | sh\nexport PATH=\"$HOME/.local/bin:$PATH\"\nuv venv --python 3.12 ~/ogs-env\nsource ~/ogs-env/bin/activate\npython --version\nuv pip install \"ogstools[ogs]\"" },
+  "Verify. Expected: `ogs  version: 6.5.9` (build options include `OGS_USE_MFRONT=ON`); ogstools 0.8.2 located in ~/ogs-env; `ogs --help` prints its usage text {U}:",
+  { code: "ogs --version\nuv pip show ogstools\nogs --help" },
+  "Clone the starter repository into ~/work (create folders before `cd`) {U}:",
+  { code: "mkdir -p ~/work/ogs-tests\ncd ~/work\ngit clone https://github.com/abrarmahir31/h2-chert-storage-ogs.git" },
+  "System libraries (gmsh, off-screen plots), CoolProp (Day 13) and the install check. Tested by Claude on Linux {T}; not yet run on Windows {W}:",
+  { code: "sudo apt install -y libgl1 libglu1-mesa libgomp1 libxcursor1 libxinerama1 \\\n    libxft2 libxrender1 libosmesa6\nuv pip install CoolProp==8.0.0\ncd ~/work/h2-chert-storage-ogs\npython starter/00_check_install/check_install.py" },
+  "Optional: limit WSL resources with `C:\\Users\\<you>\\.wslconfig` (e.g. `memory=24GB`, `processors=8` under `[wsl2]`), then `wsl --shutdown` {W}.",
 ]));
+add(P("Start every new Ubuntu session with {U}:"));
+add(...code("cd ~\nexport PATH=\"$HOME/.local/bin:$PATH\"\nsource ~/ogs-env/bin/activate"));
+add(H3("Route A2 (alternative): system Python, only if it is 3.10-3.13"));
+add(P("On Ubuntu 24.04 (Python 3.12) the plain venv also works. Tested by Claude on Linux {T}; not tested on Windows {W}:"));
+add(...code("python3 -m venv ~/ogs-env\nsource ~/ogs-env/bin/activate\npip install --upgrade pip\npip install -r ~/work/h2-chert-storage-ogs/starter/requirements.txt"));
 add(...callout("Tip", "Keep your work in the Linux file system (~/...), not under /mnt/c/. File access across the Windows boundary is much slower, and OGS writes many files."));
 add(H2("2.3 VS Code and ParaView"));
 add(...bullets([
   "VS Code: install on Windows, add the **WSL** extension, then in Ubuntu run `code .` inside the repository {W}.",
-  "ParaView (paraview.org, Windows installer): open results through `\\\\wsl.localhost\\Ubuntu-24.04\\home\\<user>\\h2-chert-storage-ogs\\...`. Running `explorer.exe .` in Ubuntu opens the current folder in Windows Explorer {W}.",
+  "ParaView (paraview.org, Windows installer): open results through `\\\\wsl.localhost\\Ubuntu\\home\\<user>\\work\\...`. Running `explorer.exe .` in Ubuntu opens the current folder in Windows Explorer {W}.",
 ]));
-add(H2("2.4 Route B: native Windows pip"));
-add(P("From the official OGS install page (Python 3.10-3.13 required) {W}:"));
+add(H2("2.4 Route B: native Windows pip (not tested)"));
+add(P("From the official OGS install page (Python 3.10-3.13 required). Not tested on Windows {W}:"));
 add(...code("python -m venv .venv\n.\\.venv\\Scripts\\Activate.ps1      # PowerShell\npip install ogstools[ogs]"));
 add(P("If PowerShell refuses to run Activate.ps1, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once {W}. The bash scripts of the starter (fetch_benchmarks.sh) need Git Bash on this route."));
-add(H2("2.5 Route C: Docker container"));
+add(H2("2.5 Route C: Docker container (not tested on Windows)"));
 add(P("starter/docker/Dockerfile builds Ubuntu 24.04 + the system libraries + the pinned pip packages. On Windows use Docker Desktop with the WSL2 backend {W}. Commands {T}:"));
-add(...code("cd ~/h2-chert-storage-ogs\ndocker build -t ogs-h2 -f starter/docker/Dockerfile .\ndocker run --rm -v \"$PWD:/work\" -w /work ogs-h2 \\\n    python starter/00_check_install/check_install.py"));
+add(...code("cd ~/work/h2-chert-storage-ogs\ndocker build -t ogs-h2 -f starter/docker/Dockerfile .\ndocker run --rm -v \"$PWD:/work\" -w /work ogs-h2 \\\n    python starter/00_check_install/check_install.py"));
 add(P("The OGS project also provides Apptainer (Singularity) images for Linux (`apptainer exec ogs-6.x.x-serial.squashfs ogs ...`, see the container page of the OGS user guide) {W}."));
 add(H2("2.6 Verify the installation with real runs"));
-add(...code(`source ~/ogs-env/bin/activate\ncd ~/h2-chert-storage-ogs\npython starter/00_check_install/check_install.py`));
+add(P("Quick version checks (verified on the lab PC) {U}: `python --version` (3.12.x inside the venv), `ogs --version` (6.5.9), `uv pip show ogstools` (0.8.2). Then the full check:"));
+add(...code(`source ~/ogs-env/bin/activate\ncd ~/work/h2-chert-storage-ogs\npython starter/00_check_install/check_install.py`));
 add(P("Real output from the sandbox (your CPU/RAM lines will differ) {T}:"));
 add(...code("Python                       3.13.18                                  OK\nLogical CPU cores            4                                        OK\nRAM visible here [GB]        15.7                                     OK\nimport ogstools              0.8.2                                    OK\nimport gmsh                  4.15.2                                   OK\nogs executable on PATH       /home/user/work/.venv/bin/ogs            OK\nogs --version                6.5.9                                    OK\ntest run (ogstools example)  11 time steps written                    OK\npressure range [MPa]         29.00 .. 31.00                           OK\n\nRESULT: ALL OK"));
 add(P("Then run the six official benchmarks (Day 3): `bash fetch_benchmarks.sh` and `python run_benchmarks.py` in starter/02_benchmarks. All six must PASS."));
 add(H2("2.7 Updating OGS"));
-add(...code("source ~/ogs-env/bin/activate\npip install --upgrade \"ogstools[ogs]\"\nogs --version\npython starter/00_check_install/check_install.py\ncd starter/02_benchmarks\nbash fetch_benchmarks.sh <new-version-tag>\npython run_benchmarks.py"));
+add(P("With the uv route (not yet tested on Windows {W}):"));
+add(...code("source ~/ogs-env/bin/activate\nuv pip install --upgrade \"ogstools[ogs]\"\nogs --version\npython starter/00_check_install/check_install.py\ncd starter/02_benchmarks\nbash fetch_benchmarks.sh <new-version-tag>\npython run_benchmarks.py"));
 add(...callout("Warning", "Never update OGS in the middle of the paper runs. Finish a batch, then update, rerun the benchmarks and the 1-cycle radial test, and compare with starter/*/expected/. Record the new versions in starter/pip_freeze_tested.txt and DECISIONS.md."));
 add(H2("2.8 Most common errors and how to fix them"));
 add(...table(["Error message / symptom", "Cause", "Fix"], [
   ["`ogs: command not found`", "venv not active", "`source ~/ogs-env/bin/activate` {T}"],
+  ["pip/uv cannot find `ogs`; `python3 --version` shows 3.14", "Python 3.14 is not supported (3.10-3.13)", "`uv venv --python 3.12 ~/ogs-env` (2.2) {U}"],
+  ["`AttributeError` from `print(ogstools._version_)`", "one underscore typed; it is `__version__` (two on each side)", "use `uv pip show ogstools` instead {U}"],
+  ["`cd ~/work`: No such file or directory", "`cd` before the folder exists", "`mkdir -p ~/work` first, then `cd ~/work` {U}"],
+  ["Prompt shows /mnt/c/Windows/system32", "new Ubuntu windows start in the Windows folder", "`cd ~` before anything else {U}"],
+  ["Red \u201CJob for systemd-binfmt.service failed\u201D during apt", "WSL has no full systemd boot here", "harmless: ignore it {U}"],
+  ["`uv: command not found`", "uv's folder not on PATH in this terminal", "`export PATH=\"$HOME/.local/bin:$PATH\"`"],
   ["`OSError: libGLU.so.1` (or `libGL.so.1`, `libgomp.so.1`) on `import gmsh`", "missing system libraries", "apt install line of 2.2 {T}"],
   ["`libOSMesa not found` / crash when plotting", "no off-screen renderer", "`sudo apt install libosmesa6`; `export PYVISTA_OFF_SCREEN=true` {T}"],
-  ["pip: no matching distribution for ogs", "Python outside 3.10-3.13", "use Ubuntu 24.04's python3 (3.12)"],
+  ["pip: no matching distribution for ogs", "Python outside 3.10-3.13", "create a Python 3.12 venv with uv (2.2) {U}"],
   ["`Mismatch in numerical Jacobian perturbation configuration`", "`<epsilons>` count wrong", "TH2M: 3 values (p_g, p_c, T) {T}"],
   ["`Key <x> has been read 0 times` / `read 1 time(s) less`", "misspelled/unused XML tag (or follow-up of an earlier error)", "fix the first error in the log; copy tags from working files"],
   ["`The required bulk node ids map does not exist in the boundary mesh`", "a mesh used for a BC lacks `bulk_node_ids`", "create boundary meshes with ogstools; add ids to the domain if it is used as a BC mesh {T}"],

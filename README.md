@@ -10,7 +10,7 @@ A step-by-step guide and verified starter files for a **generic "Aetna-style" sc
    - no hysteresis, so trapping is reported as a bracket;
    - only one gas component, so the cushion gas is H2;
    - chert is treated as an effective single continuum.
-2. Install with section 2. The primary route is Windows 11 + WSL2 + pip.
+2. Install with section 2. The primary route is Windows 10 (build 19041+) or 11, with WSL2 + Ubuntu + uv + Python 3.12. It was verified on Windows 10 Pro build 19045; see [`starter/README.md`](starter/README.md).
 3. Follow the 30 day pages in section 4: 6 h per day, each with steps, expected output, a checklist and a 3-hour fallback.
 4. Use sections 5-6 and the appendices for lookup: risk register, manuscript skeleton, glossary, cheat sheet, troubleshooting and references.
 
@@ -22,23 +22,61 @@ Status tags in the guide:
 | **[Not tested on Windows]** | Written from the official docs; you test it. |
 | **TO-VERIFY** | Not confirmed yet. |
 
-## Quick start (WSL2 Ubuntu 24.04 or Linux)
+## Quick start (WSL2 Ubuntu, verified on Windows 10 Pro build 19045)
 
 ```bash
-sudo apt install -y python3-venv git libgl1 libglu1-mesa libgomp1 libxcursor1 libxinerama1 libxft2 libxrender1 libosmesa6
+cd ~
 ```
 
 ```bash
-git clone https://github.com/abrarmahir31/h2-chert-storage-ogs.git && cd h2-chert-storage-ogs
+sudo apt update
 ```
 
 ```bash
-python3 -m venv ~/ogs-env && source ~/ogs-env/bin/activate && pip install -r starter/requirements.txt
+sudo apt install -y python3 python3-venv python3-pip git curl
 ```
 
 ```bash
-python starter/00_check_install/check_install.py        # must end with: RESULT: ALL OK
+python3 --version     # 3.14 is NOT supported by OGS -> use uv + Python 3.12 below
 ```
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+```bash
+uv venv --python 3.12 ~/ogs-env
+```
+
+```bash
+source ~/ogs-env/bin/activate
+```
+
+```bash
+uv pip install "ogstools[ogs]"
+```
+
+```bash
+ogs --version         # ogs  version: 6.5.9
+```
+
+```bash
+mkdir -p ~/work
+```
+
+```bash
+cd ~/work
+```
+
+```bash
+git clone https://github.com/abrarmahir31/h2-chert-storage-ogs.git
+```
+
+For the system libraries and the install check, see [`starter/README.md`](starter/README.md).
 
 ## Starter files (all run with OGS 6.5.9 / ogstools 0.8.2)
 

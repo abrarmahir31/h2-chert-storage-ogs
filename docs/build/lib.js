@@ -14,7 +14,7 @@ const C = {
   ink: "1A1A1A", ink2: "52514E", head: "1F3864", band: "1F3864", grid: "BFBFBF",
   code: "F3F2EF", codeBorder: "D0CFCA",
   tip: ["1BAF7A", "E8F7F1"], warn: ["EB6834", "FDEEE7"], check: ["2A78D6", "EAF2FC"],
-  why: ["6B5CA5", "F0EEF8"], tested: "137A55", notwin: "B4501F", verify: "C00000",
+  why: ["6B5CA5", "F0EEF8"], tested: "137A55", user: "1F5FAD", notwin: "B4501F", verify: "C00000",
 };
 const MAX_CODE = 88;
 const warnings = [];
@@ -23,7 +23,7 @@ let listInstance = 0;
 // ---- inline markup: **bold**, `code`, {T} tested tag, {W} not-tested tag, {V} TO-VERIFY
 function runs(text, base = {}) {
   const out = [];
-  const re = /(\*\*[^*]+\*\*|`[^`]+`|\{T\}|\{W\}|\{V\})/g;
+  const re = /(\*\*[^*]+\*\*|`[^`]+`|\{T\}|\{W\}|\{V\}|\{U\})/g;
   let last = 0, m;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) out.push(new TextRun({ text: text.slice(last, m.index), ...base }));
@@ -32,6 +32,7 @@ function runs(text, base = {}) {
     else if (t.startsWith("`")) out.push(new TextRun({ text: t.slice(1, -1), font: MONO, size: 19, ...base, color: "7A2E0E" }));
     else if (t === "{T}") out.push(new TextRun({ text: "[Tested by Claude on Linux]", bold: true, color: C.tested, size: 18 }));
     else if (t === "{W}") out.push(new TextRun({ text: "[Not tested on Windows]", bold: true, color: C.notwin, size: 18 }));
+    else if (t === "{U}") out.push(new TextRun({ text: "[Verified by the user on Windows 10 Pro (build 19045) with WSL2]", bold: true, color: C.user, size: 18 }));
     else if (t === "{V}") out.push(new TextRun({ text: "TO-VERIFY", bold: true, color: C.verify, size: 18 }));
     last = m.index + t.length;
   }
