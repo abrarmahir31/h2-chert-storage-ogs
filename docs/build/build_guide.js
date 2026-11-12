@@ -223,7 +223,7 @@ add(...bullets([
   "Initial state: depleted, p_g = 4 MPa, S_L = 0.60 (p_c = 1.764 MPa from van Genuchten), 50 \u00B0C.",
   "Well: H2 injection 0.1 kg/s as a Neumann mass flux; withdrawal by `DirichletWithinTimeInterval` gas pressure = 4 MPa (gas-only producer, never below the initial pressure, so native gas is not produced).",
   "Schedule (starter/common/schedule.py): 180 d cushion filling, 30 d rest, then 3 x (120 d injection, 30 d rest, 120 d withdrawal, 30 d rest).",
-  "Recovery factor (per cycle) = H2 produced in the withdrawal window / H2 injected in that cycle. Cushion fraction = cushion mass / (cushion + working mass) = 0.60.",
+  "Recovery factor (per cycle) = H2 produced in the withdrawal window / H2 injected in that cycle. Cushion fraction = cushion mass / (cushion + working mass) = 0.60. This per-cycle RF can exceed 1 when withdrawal also produces cushion gas (seen with a 360-day cushion: RF 1.19), so always report it together with the H2 in place after each cycle {T}.",
   "Self-check: H2 inventory change vs. injected mass before the first withdrawal; error < 1 % {T}.",
 ]));
 add(...image(path.join(ROOT, "starter/03_radial_h2/expected/radial_drainage_inventory.png"), 5.4, "Figure 6. H2 inventory vs. injected mass, drainage bracket (grey = withdrawal). {T}"));
