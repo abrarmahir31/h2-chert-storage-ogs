@@ -20,8 +20,6 @@ import numpy as np  # noqa: E402
 import ogstools as ot  # noqa: E402
 
 here = Path(__file__).resolve().parent
-sys.path.insert(0, str(here.parent / "common"))
-import props  # noqa: E402
 
 DAY = 86400.0
 ap = argparse.ArgumentParser()
@@ -58,8 +56,14 @@ def h2_mass(mesh):
 inv = np.array([h2_mass(ms[i]) for i in range(len(t))])
 M, M_dis = inv[:, 0], inv[:, 1]
 # injected mass = integral of rate; rate = flux * well area (2 pi r_w H)
-P = props.load()
-q_to_rate = P["rate_inj"] / values.max() if values.max() > 0 else 0.0
+# Injection rate [kg/s] = flux in the prj curve x well area 2 pi r_w H. It is read
+# from the run itself (not from properties.csv), so --set rate_inj=... runs are right.
+import pyvista as pv  # noqa: E402
+mesh_rel = re.search(r"<mesh[^>]*>([^<]*well\.vtu)</mesh>", txt).group(1)
+well = pv.read(prj.parent / mesh_rel)
+area = 2 * np.pi * well.bounds[0] * (well.bounds[3] - well.bounds[2])
+rate_inj = values.max() * area
+q_to_rate = area
 tt = np.linspace(0, t[-1], 200001)
 rate = np.interp(tt, coords, values) * q_to_rate
 cum_inj = np.concatenate([[0], np.cumsum(0.5 * (rate[1:] + rate[:-1]) * np.diff(tt))])
@@ -82,11 +86,11 @@ for i in range(1, len(coords)):
     if on[i - 1] and not on[i]:
         inj_windows.append((start, coords[i - 1]))
 cushion = inj_windows[0][1] - inj_windows[0][0]
-m_cushion = P["rate_inj"] * cushion
+m_cushion = rate_inj * cushion
 for k, (s, e) in enumerate(wd):
     i_s, i_e = np.argmin(abs(t - s)), np.argmin(abs(t - e))
     s_inj, e_inj = inj_windows[k + 1]
-    m_inj = P["rate_inj"] * (e_inj - s_inj)
+    m_inj = rate_inj * (e_inj - s_inj)
     m_prod = M[i_s] - M[i_e]
     rows.append(dict(cycle=k + 1, injected_t=m_inj / 1e3, produced_t=m_prod / 1e3,
                      recovery_factor=m_prod / m_inj,

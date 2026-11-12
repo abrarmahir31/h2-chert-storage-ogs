@@ -16,7 +16,7 @@ const C = {
   tip: ["1BAF7A", "E8F7F1"], warn: ["EB6834", "FDEEE7"], check: ["2A78D6", "EAF2FC"],
   why: ["6B5CA5", "F0EEF8"], tested: "137A55", notwin: "B4501F", verify: "C00000",
 };
-const MAX_CODE = 92;
+const MAX_CODE = 88;
 const warnings = [];
 let listInstance = 0;
 

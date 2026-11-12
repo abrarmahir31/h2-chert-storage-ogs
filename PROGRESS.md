@@ -9,8 +9,9 @@
 | starter/00_check_install (machine + install check) | done | Tested by Claude on Linux |
 | starter/02_benchmarks: fetch at tag 6.5.9 + run 6 official benchmarks (Theis, Kirsch, confined compression, McWhorter, Liakopoulos, Bourgeat) | done | All PASS (official assert checks), < 1 min total |
 | starter/04_fault_section: plane-strain TH2M with fault band, Coulomb analysis + sensitivity, 6 verification tests | done | Run 19 min on 4 cores; tests all PASS |
-| Word guide docs/OGS_H2_Storage_Aetna_30Day_Guide.docx (88 pages) | draft built | docs/build/*.js; TOC filled with LibreOffice |
-| PDF render + visual check | in progress | first pass fixed: day-title duplication, code wrap, keep-with-next |
+| Word guide docs/OGS_H2_Storage_Aetna_30Day_Guide.docx (91 pages) + PDF | done | docs/build/*.js; TOC filled with LibreOffice; validated |
+| PDF render + visual check | done | all 91 pages inspected; fixed title duplication, code wraps, split tables |
+| Commands in guide vs. starter files | done | docs/build/check_commands.py: OK (52+ commands) |
 | README.md | done | |
 | Docker fallback (starter/docker) | done | built and tested on Linux: check_install ALL OK, radial 1-cycle RF 0.707 = host |
-| Days 21-25 command loops run as printed | running | |
+| Days 21-25 command loops run as printed | done | all ran; found + fixed rate bug (D19), shortcut overestimate (D18), RF>1 (D17); mesh converged at 600 cells |

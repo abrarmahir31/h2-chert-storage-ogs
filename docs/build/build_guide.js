@@ -63,6 +63,7 @@ add(H2("1.3 Q2: Is there relative-permeability or capillary hysteresis?"));
 add(P("**Answer: No.** No hysteresis model exists in the material library or in the two-phase processes (searched source code). All saturation and relative-permeability models are single-valued (van Genuchten, Brooks-Corey, Udell, Liakopoulos, generalized power, tabulated Curve)."));
 add(P("**Consequence:** gas trapped behind a retreating gas front during withdrawal is not simulated, so a single run over-estimates recovery. Hysteresis is strong for H2-brine systems (Lysyy et al. 2022)."));
 add(P("**What we do: a trapping bracket.** Bracket A uses drainage curves with residual gas saturation 0 (no trapping, upper bound on recovery). Bracket B uses curves whose residual gas saturation is the Land (1968) trapped saturation S_gr = S_gi/(1 + C S_gi) with S_gi = 1 - S_Lr, applied everywhere (maximum trapping, lower bound). With C = 2, S_gr = 0.262."));
+add(P("Tested size of this uncertainty: with Land coefficients C = 1, 2 and 5 the cycle-3 recovery is 0.12, 0.38 and 0.72, against 0.85 without trapping {T}. Trapping is therefore the largest single uncertainty, and the paper must say so."));
 add(...image(FIG("fig_recovery_bracket.png"), 4.6, "Figure 2. Recovery factor per cycle for the two trapping brackets (starter radial model, synthetic properties). {T}"));
 add(H2("1.4 Q3: Are hydrogen properties built in?"));
 add(P("**Answer: No.** There is no hydrogen entry in the OGS material library; you supply every H2 property. What the starter does:"));
@@ -232,7 +233,7 @@ add(...bullets([
   "Geometry: 2D plane strain, 3 km long, surface to 2.5 km depth; overburden, 50 m caprock, 20 m reservoir at 1450 m, underburden; 10 m fault band dipping 60\u00B0 crossing the reservoir 600 m from the well (left boundary = symmetry plane).",
   "Initial capillary pressure uniform (capillary equilibrium); seals stay > 99.5 % brine-saturated because of their high p_b (D12).",
   "Stress: changes from the depleted initial state (no gravity, no initial stress); in-situ stress added in coulomb.py (superposition).",
-  "Output: dCFS history and profile, plus a sensitivity table for friction, dip (stress rotated onto other planes), Shmin/Sv, SHmax/Sv and SHmax azimuth.",
+  "Output: dCFS history and profile, plus a sensitivity table for friction, dip, Shmin/Sv, SHmax/Sv and SHmax azimuth. The dip entries only rotate the plane at the same cells; a full re-mesh at 45 degrees gave 0.92 MPa instead of 1.23 MPa, so re-mesh for reported dip results {T}.",
 ]));
 add(...image(path.join(ROOT, "starter/04_fault_section/expected/section_drainage_coulomb.png"), 6.0, "Figure 7. Coulomb stress change on the fault band (synthetic stress state). {T}"));
 add(...callout("Check", "Base case: max dCFS = +0.86 MPa at the end of the first injection; the most critical fault cell goes from CFF0 = -0.29 MPa to +0.55 MPa. With Shmin/Sv = 0.6 or mu = 0.4 the synthetic fault already exceeds failure before injection (CFF0 > 0), which is physically inconsistent and shows that the stress state must be calibrated before any conclusion about fault safety."));
@@ -405,6 +406,8 @@ add(...table(["Check", "Result"], [
   ["sigma - sigma_total vs. p_g - S_L p_c", "max difference 0.25 kPa"],
   ["test_coulomb.py", "6 x PASS"],
   ["compute_h2_properties.py", "ideal-gas error 2.2 % (4 MPa) - 11.5 % (20 MPa)"],
+  ["Days 21-25 loops, run exactly as printed (cushion, Land C, 8 sensitivities, dip 45 re-mesh, 3 meshes)", "all ran; results in starter/*/expected/days21-25 and day24_dip45"],
+  ["Mesh convergence (1 cycle)", "RF 0.855 / 0.707 / 0.699 for 300 / 600 / 2400 cells"],
   ["Commands in this guide vs. starter scripts", "checked by docs/build/check_commands.py"],
 ], [3.2, 3.8]));
 
