@@ -194,8 +194,8 @@
     <curves>
         <curve>
             <name>injection_schedule</name>
-            <coords>0.0 1.0 15552000.0 15552001.0 18144001.0 28512000.0 28512001.0 44064001.0 54432000.0 54432001.0 69984001.0 80352000.0 80352001.0 96904000.0</coords>
-            <values>7.957747e-03 7.957747e-03 7.957747e-03 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 0.000000e+00</values>
+            <coords>0.0 15552000.0 15552001.0 18144000.0 18144001.0 28512000.0 28512001.0 44064000.0 44064001.0 54432000.0 54432001.0 69984000.0 69984001.0 80352000.0 80352001.0 96904000.0</coords>
+            <values>7.957747e-03 7.957747e-03 0.000000e+00 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 0.000000e+00 7.957747e-03 7.957747e-03 0.000000e+00 0.000000e+00</values>
         </curve>
     </curves>
     <process_variables>
@@ -213,26 +213,18 @@
             <initial_condition>pg0</initial_condition>
             <boundary_conditions>
                 <boundary_condition><mesh>well</mesh><type>Neumann</type><component>0</component><parameter>h2_flux</parameter></boundary_condition>
-            <boundary_condition>
-                <mesh>well</mesh>
-                <type>DirichletWithinTimeInterval</type>
-                <parameter>p_bhp_min</parameter>
-                <time_interval><start>31104000.0</start><end>41472000.0</end></time_interval>
-            </boundary_condition>
-
-            <boundary_condition>
-                <mesh>well</mesh>
-                <type>DirichletWithinTimeInterval</type>
-                <parameter>p_bhp_min</parameter>
-                <time_interval><start>57024000.0</start><end>67392000.0</end></time_interval>
-            </boundary_condition>
-
-            <boundary_condition>
-                <mesh>well</mesh>
-                <type>DirichletWithinTimeInterval</type>
-                <parameter>p_bhp_min</parameter>
-                <time_interval><start>82944000.0</start><end>93312000.0</end></time_interval>
-            </boundary_condition>
+                <boundary_condition><mesh>well</mesh><type>DirichletWithinTimeInterval</type>
+                    <parameter>p_bhp_min</parameter>
+                    <time_interval><start>31104000.0</start><end>41472000.0</end></time_interval>
+                </boundary_condition>
+                <boundary_condition><mesh>well</mesh><type>DirichletWithinTimeInterval</type>
+                    <parameter>p_bhp_min</parameter>
+                    <time_interval><start>57024000.0</start><end>67392000.0</end></time_interval>
+                </boundary_condition>
+                <boundary_condition><mesh>well</mesh><type>DirichletWithinTimeInterval</type>
+                    <parameter>p_bhp_min</parameter>
+                    <time_interval><start>82944000.0</start><end>93312000.0</end></time_interval>
+                </boundary_condition>
             </boundary_conditions>
         </process_variable>
         <process_variable>

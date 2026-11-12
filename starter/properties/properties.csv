@@ -16,7 +16,7 @@ biot,1.0,-,Biot coefficient,synthetic/literature,Upper-bound assumption as in OG
 rho_solid,2650,kg/m3,Grain density (quartz/chert),synthetic/literature,Density of quartz (standard value)
 cap_porosity,0.05,-,Caprock porosity,synthetic/literature,Generic shale value; TO-VERIFY
 cap_permeability,1.0e-19,m2,Caprock permeability,synthetic/literature,Generic shale value; TO-VERIFY
-cap_vG_pb,5.0e6,Pa,Caprock capillary scale pressure,synthetic/literature,Generic shale value; TO-VERIFY
+cap_vG_pb,2.0e7,Pa,Capillary scale pressure of caprock and over-/underburden,synthetic/literature,Chosen so that seals stay > 99.5% brine-saturated at the uniform initial capillary pressure (capillary equilibrium); TO-VERIFY with shale MICP data
 cap_E,15.0e9,Pa,Caprock Young's modulus,synthetic/literature,Generic shale value; TO-VERIFY
 cap_nu,0.30,-,Caprock Poisson's ratio,synthetic/literature,Generic shale value; TO-VERIFY
 flt_porosity,0.10,-,Fault band porosity,synthetic/literature,Generic damage-zone value; TO-VERIFY
@@ -48,3 +48,11 @@ fault_dip,60,deg,Fault dip angle in the 2D section,synthetic/literature,Sensitiv
 r_well,0.1,m,Well radius (inner boundary of radial model),synthetic/literature,Typical production casing scale
 re_compartment,500,m,Radius of the closed (no-flow) compartment drained by the well,synthetic/literature,Design/sensitivity parameter (250-1000 m); fault-bounded compartment assumed
 res_thickness,20,m,Net reservoir thickness in radial model,synthetic/literature,Placeholder; TO-VERIFY from log-derived net pay
+cap_S_Lr,0.20,-,Caprock residual liquid saturation,synthetic/literature,Generic shale value; TO-VERIFY
+ob_porosity,0.10,-,Over- and underburden porosity,synthetic/literature,Generic; TO-VERIFY
+ob_permeability,1.0e-18,m2,Over- and underburden permeability,synthetic/literature,Generic; TO-VERIFY
+ob_E,20.0e9,Pa,Over- and underburden Young's modulus,synthetic/literature,Generic; TO-VERIFY
+ob_nu,0.25,-,Over- and underburden Poisson's ratio,synthetic/literature,Generic; TO-VERIFY
+line_rate,1.0e-4,kg/(s m),H2 rate per metre of well length in the 2D section (plane strain),synthetic/literature,0.1 kg/s spread over 1 km of horizontal well (or a row of wells); half of it enters the modelled half-section
+section_azimuth,0,deg,Azimuth of the 2D section (x axis) measured clockwise from north,synthetic/literature,Fault strike = section azimuth + 90 deg; sensitivity
+SHmax_azimuth,75,deg,Azimuth of maximum horizontal stress,synthetic/literature,Roughly ENE-WSW in the Midcontinent (TO-VERIFY with World Stress Map / Kansas studies)

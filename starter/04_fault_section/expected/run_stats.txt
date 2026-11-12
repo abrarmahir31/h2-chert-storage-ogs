@@ -1,0 +1,2 @@
+	 the accepted steps are 187, and the rejected steps are 0.
+wall time 1133 s on 4 cores (Linux sandbox)

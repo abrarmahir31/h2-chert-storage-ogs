@@ -8,7 +8,7 @@
 | starter/03_radial_h2 (TH2M axisymmetric, 3 cycles, 2 trapping brackets) | done | ~5-8 min per run on 4 cores; mass balance error < 0.8 % |
 | starter/00_check_install (machine + install check) | done | Tested by Claude on Linux |
 | starter/02_benchmarks: fetch at tag 6.5.9 + run 6 official benchmarks (Theis, Kirsch, confined compression, McWhorter, Liakopoulos, Bourgeat) | done | All PASS (official assert checks), < 1 min total |
-| starter/04_fault_section (+ Coulomb verification) | todo | |
+| starter/04_fault_section: plane-strain TH2M with fault band, Coulomb analysis + sensitivity, 6 verification tests | done | Run 19 min on 4 cores; tests all PASS |
 | Word guide docs/OGS_H2_Storage_Aetna_30Day_Guide.docx | todo | |
 | PDF render + visual check | todo | |
 | README.md | todo | |

@@ -1,0 +1,15 @@
+has_identified_subdomains: true
+meshes:
+- domain
+- left
+- right
+- bottom
+- top
+- well
+- overburden
+- caprock
+- reservoir
+- underburden
+- fault
+num_partitions: []
+output_names: {}

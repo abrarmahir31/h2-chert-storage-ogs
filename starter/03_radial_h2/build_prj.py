@@ -41,49 +41,20 @@ else:  # Land-type trapped gas saturation from the largest possible gas saturati
     S_gr = props.land_trapped(1.0 - S_Lr, P["land_C"])
 pc0 = props.vg_pc(P["S_L_init"], P["res_vG_pb"], P["res_vG_m"], S_Lr, S_gr)
 
-# ---- schedule: cushion filling, then n x (inject, rest, withdraw, rest) -----
-t = 0.0
-switch = [0.0]
-inj_windows, wd_windows = [], []
-t_c = P["t_cushion"] * DAY
-inj_windows.append((t, t + t_c)); t += t_c
-t += P["t_rest"] * DAY; switch += [t_c, t]
-for _ in range(int(P["n_cycles"])):
-    inj_windows.append((t, t + P["t_inj"] * DAY)); t += P["t_inj"] * DAY; switch.append(t)
-    t += P["t_rest"] * DAY; switch.append(t)
-    wd_windows.append((t, t + P["t_wd"] * DAY)); t += P["t_wd"] * DAY; switch.append(t)
-    t += P["t_rest"] * DAY; switch.append(t)
-t_end = t
+import pyvista as pv  # noqa: E402
+import schedule  # noqa: E402
 
 # Neumann flux on the well face: H2 mass flux [kg/(m2 s)] = rate / (2 pi r_w H)
-# (OGS integrates axisymmetric boundaries over 2 pi r; this is checked by the
-#  mass balance in postprocess.py)
-import pyvista as pv  # noqa: E402
+# (OGS integrates axisymmetric boundaries over 2 pi r; postprocess.py checks
+#  this with a mass balance)
 well = pv.read(here / "mesh" / "well.vtu")
 r_w = well.bounds[0]
 H = well.bounds[3] - well.bounds[2]
 q = P["rate_inj"] / (2 * 3.141592653589793 * r_w * H)
-eps = 1.0  # 1 s ramp so that the curve is single-valued
-coords, values = [0.0], [0.0]
-for (t0, t1) in inj_windows:
-    coords += [t0 + eps, t1, t1 + eps]
-    values += [q, q, 0.0]
-coords += [t_end + 1e6]
-values += [0.0]
-coords[0], values[0] = 0.0, 0.0
-if inj_windows[0][0] == 0.0:  # injection starts at t=0
-    values[0] = q
-
-dirichlet_wd = "\n".join(f"""
-            <boundary_condition>
-                <mesh>well</mesh>
-                <type>DirichletWithinTimeInterval</type>
-                <parameter>p_bhp_min</parameter>
-                <time_interval><start>{t0:.1f}</start><end>{t1:.1f}</end></time_interval>
-            </boundary_condition>""" for t0, t1 in wd_windows)
-
-fixed_times = sorted(set(switch + [k * 10 * DAY for k in range(1, int(t_end / (10 * DAY)) + 1)]))
-fixed_times = [x for x in fixed_times if 0 < x <= t_end]
+S = schedule.build(P, q)
+t_end, coords, values = S["t_end"], S["coords"], S["values"]
+dirichlet_wd = schedule.dirichlet_windows_xml(S, "well", "p_bhp_min")
+fixed_times = schedule.output_times(S)
 g = "0 -9.81" if a.gravity else "0 0"
 name = f"radial_{a.bracket}{('_' + a.tag) if a.tag else ''}"
 axi = 'axially_symmetric="true"'
