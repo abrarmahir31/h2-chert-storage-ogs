@@ -3,13 +3,13 @@
   <UnstructuredGrid>
     <Piece NumberOfPoints="3" NumberOfCells="2">
       <PointData Scalars="bulk_node_ids">
-        <DataArray type="UInt64" Name="bulk_node_ids" format="binary" RangeMin="8" RangeMax="631">
-          AQAAAACAAAAYAAAAEQAAAA==eF7jYIAAHihdzgShAQVeAI4=
+        <DataArray type="UInt64" Name="bulk_node_ids" format="binary" RangeMin="8" RangeMax="588">
+          AQAAAACAAAAYAAAAEQAAAA==eF7jYIAAHijtwwShAQQGAGM=
         </DataArray>
       </PointData>
       <CellData Scalars="bulk_element_ids">
-        <DataArray type="UInt64" Name="bulk_element_ids" format="binary" RangeMin="5164" RangeMax="5246">
-          AQAAAACAAAAQAAAADwAAAA==eF6rE2EAAx0oDQALCADT
+        <DataArray type="UInt64" Name="bulk_element_ids" format="binary" RangeMin="4764" RangeMax="4834">
+          AQAAAACAAAAQAAAADwAAAA==eF57JMQABnOgNAAUnAGj
         </DataArray>
       </CellData>
       <Points>

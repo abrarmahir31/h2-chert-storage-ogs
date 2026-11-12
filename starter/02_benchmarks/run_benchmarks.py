@@ -31,7 +31,7 @@ BENCH = {
     "confined_compression": ("HydroMechanics/Linear/Confined_Compression", None, "square_1e2.prj"),
     "mcwhorter": ("TH2M/H2/mcWhorter", "mcWhorter.py", None),
     "liakopoulos": ("TH2M/H2M/Liakopoulos", "ogs-jupyter-lab-h2m-2d-liakopoulos.py", None),
-    "bourgeat": ("TH2M/H2/dissolution_diffusion", None, "bourgeat.prj"),
+    "bourgeat": ("TH2M/H2/dissolution_diffusion", "phase_appearance.py", None),
 }
 
 if not data.exists():

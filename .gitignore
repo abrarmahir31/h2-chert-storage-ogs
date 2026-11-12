@@ -2,7 +2,8 @@
 __pycache__/
 *.pyc
 # simulation output (re-creatable)
-starter/**/out/
+starter/**/out*/
+starter/**/*.log
 starter/**/*.msh
 docs/build/node_modules/
 docs/build/render/

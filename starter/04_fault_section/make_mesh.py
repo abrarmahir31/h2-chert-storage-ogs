@@ -6,7 +6,7 @@ The fault is a thin band of ordinary elements (no interface elements), so it
 can have its own permeability and stiffness. Slip is NOT modelled.
 The injection "well" is the reservoir part of the left boundary (symmetry plane).
 
-Run: python make_mesh.py [--dip 60 --width 10 --xf 600 --lc 15]
+Run: python make_mesh.py [--dip 60 --width 10 --xf 600 --lc 10]
 """
 import argparse
 import math
@@ -29,7 +29,7 @@ ap.add_argument("--dip", type=float, default=P["fault_dip"], help="fault dip [de
 ap.add_argument("--width", type=float, default=10.0, help="fault band width [m]")
 ap.add_argument("--xf", type=float, default=600.0, help="x where fault crosses reservoir top [m]")
 ap.add_argument("--hcap", type=float, default=50.0, help="caprock thickness [m]")
-ap.add_argument("--lc", type=float, default=15.0, help="element size in reservoir/fault [m]")
+ap.add_argument("--lc", type=float, default=10.0, help="element size in reservoir/fault [m]")
 ap.add_argument("--lc_far", type=float, default=200.0, help="element size far away [m]")
 ap.add_argument("--out", default=str(here / "mesh"))
 a = ap.parse_args()

@@ -3,13 +3,13 @@
   <UnstructuredGrid>
     <Piece NumberOfPoints="34" NumberOfCells="33">
       <PointData Scalars="bulk_node_ids">
-        <DataArray type="UInt64" Name="bulk_node_ids" format="binary" RangeMin="6" RangeMax="1021">
-          AQAAAACAAAAQAQAAUgAAAA==eF4txTkOgkAAAECVRAoLCyoVRA6/789AExC5TCh2ppnjLoh98tmJL/vw1Tenznx37ocLl65c++nGrd/++HUId1G499eDfx49efbi1X9vVZcREg==
+        <DataArray type="UInt64" Name="bulk_node_ids" format="binary" RangeMin="6" RangeMax="1016">
+          AQAAAACAAAAQAQAAUQAAAA==eF4ty7kRggAAAEGRGQwIDGiZukBqAZVHkUeekIC9ZKOLLmc3xrwzYcmKT774Zs2GLTt++GXPH7PgNOeDBdOrL/Rx4MiJM/9cuHLjzgM85Roq
         </DataArray>
       </PointData>
       <CellData Scalars="bulk_element_ids">
-        <DataArray type="UInt64" Name="bulk_element_ids" format="binary" RangeMin="1859" RangeMax="8419">
-          AQAAAACAAAAIAQAAawAAAA==eF7by8EABg/YIfRnKD0HSl+F0l1Q2heqPg3Kb4LSzlB6C5R+CaWZOSF0NZS+IwyhZaC0EpSWhdL3obSpKIR2g9KPFSD0I3kIfUMOQi+C8t9D+Q+gfBko/RlKG0JpcQUIXQblu0P5AOe4FDg=
+        <DataArray type="UInt64" Name="bulk_element_ids" format="binary" RangeMin="1461" RangeMax="8339">
+          AQAAAACAAAAIAQAAaAAAAA==eF4tya0OQFAchnHlkFF9nIsQKbrZNGazSYKkuBBZ02TxuA83QlBs/s9bfnv2vrb1r8MRNVaoMMdLiQ8emPD3GDjiiakn1q7YYoMZv/HFFRctlrE4RGJIz3RBb3RNG3qib3qnP5aYEY8=
         </DataArray>
       </CellData>
       <Points>
