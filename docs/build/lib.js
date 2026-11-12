@@ -103,14 +103,15 @@ function table(header, rows, widths, opt = {}) {
   const b = { style: BorderStyle.SINGLE, size: 4, color: C.grid };
   const borders = { top: b, bottom: b, left: b, right: b };
   const fs = opt.size || 19;
-  const cell = (t, i, hdr, shade) => new TableCell({
+  const keepAll = opt.keep !== undefined ? opt.keep : rows.length <= 10;   // small tables never split
+  const cell = (t, i, hdr, shade, last) => new TableCell({
     width: { size: cw[i], type: WidthType.DXA }, borders, margins: { top: 50, bottom: 50, left: 90, right: 90 },
     shading: hdr ? { fill: "DCE3EE", type: ShadingType.CLEAR, color: "auto" } : (shade ? { fill: "F7F7F5", type: ShadingType.CLEAR, color: "auto" } : undefined),
-    children: String(t).split("\n").map((line) => new Paragraph({ children: runs(line, { size: fs, bold: hdr || undefined }), spacing: { after: 20 } })),
+    children: String(t).split("\n").map((line) => new Paragraph({ keepNext: keepAll && !last, children: runs(line, { size: fs, bold: hdr || undefined }), spacing: { after: 20 } })),
   });
   const trs = [];
   if (header) trs.push(new TableRow({ tableHeader: true, cantSplit: true, children: header.map((h, i) => cell(h, i, true)) }));
-  rows.forEach((r, k) => trs.push(new TableRow({ cantSplit: true, children: r.map((t, i) => cell(t, i, false, k % 2 === 1)) })));
+  rows.forEach((r, k) => trs.push(new TableRow({ cantSplit: true, children: r.map((t, i) => cell(t, i, false, k % 2 === 1, k === rows.length - 1)) })));
   return [new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: cw, rows: trs }), new Paragraph({ children: [], spacing: { after: 100 } })];
 }
 

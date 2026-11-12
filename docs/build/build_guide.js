@@ -408,6 +408,14 @@ add(...table(["Check", "Result"], [
   ["Commands in this guide vs. starter scripts", "checked by docs/build/check_commands.py"],
 ], [3.2, 3.8]));
 
+add(H1("Appendix F. Model properties and their sources"));
+add(P("Printed automatically from starter/properties/properties.csv when the guide is built. Tags: **synthetic/literature** = generic or literature-based placeholder; **literature** = taken from a cited source; **computed** = computed by a script (CoolProp). Replace values here only; every model reads this file."));
+{
+  const lines = fs.readFileSync(path.join(ROOT, "starter/properties/properties.csv"), "utf8").trim().split("\n").slice(1);
+  const rows = lines.map((l) => { const c = l.split(","); return [`\`${c[0]}\``, c[1], c[2], c[4], c.slice(5).join(",").replace(/TO-VERIFY/g, "{V}")]; });
+  add(...table(["Key", "Value", "Unit", "Tag", "Source"], rows, [1.7, 0.9, 0.8, 1.2, 3.4], { size: 15, keep: false }));
+}
+
 // ============================================================ document
 const doc = new Document({
   creator: "Claude (Anthropic) for a graduate research project",

@@ -8,3 +8,7 @@ starter/**/*.msh
 docs/build/node_modules/
 docs/build/render/
 starter/02_benchmarks/ogs_src/
+starter/**/*_*_*.prj
+starter/**/mesh_base_backup/
+starter/**/mesh_fine/
+starter/**/day24_coulomb.txt
