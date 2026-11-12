@@ -154,8 +154,8 @@ if __name__ == "__main__":
     cases += [(f"friction={v}", {"friction": v}, P["fault_dip"]) for v in (0.4, 0.8)]
     cases += [(f"dip={v}", {}, v) for v in (45, 75)]
     cases += [(f"Shmin_ratio={v}", {"Shmin_ratio": v}, P["fault_dip"]) for v in (0.6, 0.8)]
-    cases += [(f"SHmax_ratio={v}", {"SHmax_ratio": v}, P["fault_dip"]) for v in (1.0, 1.3)]
-    cases += [(f"SHmax_azimuth={v}", {"SHmax_azimuth": v}, P["fault_dip"]) for v in (0, 45)]
+    cases += [(f"SHmax_ratio={v}", {"SHmax_ratio": v}, P["fault_dip"]) for v in (1.15, 1.3)]
+    cases += [(f"SHmax_azimuth={v}", {"SHmax_azimuth": v}, P["fault_dip"]) for v in (45, 115)]
     rows = []
     for label, ov, dip in cases:
         Pp = dict(P, **ov)

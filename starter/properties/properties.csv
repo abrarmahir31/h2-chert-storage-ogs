@@ -41,8 +41,8 @@ t_wd,120,day,Withdrawal period per cycle,synthetic/literature,Seasonal cycle des
 n_cycles,3,-,Number of storage cycles,synthetic/literature,Screening (increase to 5-10 for paper)
 p_bhp_min,4.0e6,Pa,Minimum bottom-hole gas pressure during withdrawal,synthetic/literature,Set equal to p_init so native gas (modelled as H2) is not produced
 Sv_grad,23.0e3,Pa/m,Vertical stress gradient,synthetic/literature,About 1 psi/ft; TO-VERIFY with density log integration
-Shmin_ratio,0.70,-,Shmin / Sv,synthetic/literature,Strike-slip regime assumed for south-central Kansas (TO-VERIFY); sensitivity 0.6-0.8
-SHmax_ratio,1.10,-,SHmax / Sv,synthetic/literature,Strike-slip regime assumed (TO-VERIFY); sensitivity 1.0-1.3
+Shmin_ratio,0.65,-,Shmin / Sv,synthetic/literature,Strike-slip/normal regime reported for northern Oklahoma and southern Kansas (Alt & Zoback 2017); value TO-VERIFY; sensitivity 0.6-0.8
+SHmax_ratio,1.0,-,SHmax / Sv,synthetic/literature,SHmax ~ Sv at the strike-slip/normal transition (Alt & Zoback 2017); TO-VERIFY; sensitivity 1.0-1.3
 friction,0.6,-,Fault friction coefficient,literature,Byerlee (1978); sensitivity 0.4-0.8
 fault_dip,60,deg,Fault dip angle in the 2D section,synthetic/literature,Sensitivity 45-75 deg
 r_well,0.1,m,Well radius (inner boundary of radial model),synthetic/literature,Typical production casing scale
@@ -54,5 +54,5 @@ ob_permeability,1.0e-18,m2,Over- and underburden permeability,synthetic/literatu
 ob_E,20.0e9,Pa,Over- and underburden Young's modulus,synthetic/literature,Generic; TO-VERIFY
 ob_nu,0.25,-,Over- and underburden Poisson's ratio,synthetic/literature,Generic; TO-VERIFY
 line_rate,1.0e-4,kg/(s m),H2 rate per metre of well length in the 2D section (plane strain),synthetic/literature,0.1 kg/s spread over 1 km of horizontal well (or a row of wells); half of it enters the modelled half-section
-section_azimuth,0,deg,Azimuth of the 2D section (x axis) measured clockwise from north,synthetic/literature,Fault strike = section azimuth + 90 deg; sensitivity
-SHmax_azimuth,75,deg,Azimuth of maximum horizontal stress,synthetic/literature,Roughly ENE-WSW in the Midcontinent (TO-VERIFY with World Stress Map / Kansas studies)
+section_azimuth,0,deg,Azimuth of the 2D section (x axis) clockwise from north,synthetic/literature,Hypothetical E-W striking fault (strike = section azimuth + 90); TO-VERIFY with mapped faults near Aetna
+SHmax_azimuth,85,deg,Azimuth of maximum horizontal stress,literature,N85E +/- 5 deg in Oklahoma (Alt & Zoback 2017); extrapolation to Barber County TO-VERIFY (World Stress Map)
